@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+  <div class="container">
+    <header class="main-header">
+      <h1 id="welcome">Welcome, Student</h1>
+      <div class="header-controls">
+        <div class="theme-toggle-container">
+          <label class="theme-toggle">
+            <input type="checkbox" id="themeToggle" class="theme-toggle-checkbox" />
+            <div class="theme-toggle-switch">
+              <span class="theme-toggle-label">☀️</span>
+              <span class="theme-toggle-label">🌙</span>
+            </div>
+          </label>
+        </div>
+        <div class="user-dropdown">
+          <button id="userDropdownBtn" aria-label="User Profile">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24"
+              style="vertical-align: middle; color: white;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5.121 17.804A13.937 13.937 0 0112 15c2.517 0 4.847.64 6.879 1.754M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+          <div id="userDropdownContent" class="dropdown-content">
+            <p id="userNameDisplay"></p>
+            <div class="password-container">
+              <label for="passwordField">Password:</label>
+              <input type="password" id="passwordField" readonly />
+              <small id="togglePassword">Show</small>
+            </div>
+            <button id="clearProgressBtn" class="dropdown-btn">Clear Progress</button>
+            <button id="logoutBtn" class="dropdown-btn">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="progress-analytics-card">
+      <div class="progress-col progress-box">
+        <h2>Learning Progress</h2>
+        <div class="circular-progress">
+          <svg viewBox="0 0 80 80">
+            <defs>
+              <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <circle class="bg" cx="40" cy="40" r="35"></circle>
+            <circle class="progress" id="progressCircle" cx="40" cy="40" r="35"></circle>
+          </svg>
+          <div class="progress-value" id="progressText">0%</div>
+        </div>
+        <div class="streak-display">
+          <span id="fireIcon">🔥</span>
+          <span id="streakText">0 day streak</span>
+        </div>
+      </div>
+      <div class="analytics-col analytics-box">
+        <h2 class="analytics-heading">Playlist Analytics</h2>
+        <div class="analytics-row">
+          <span class="analytics-label">Total Videos:</span>
+          <span class="analytics-metric"><span id="totalVideos" class="analytics-val">0</span></span>
+        </div>
+        <div class="analytics-row">
+          <span class="analytics-label">Estimated Duration:</span>
+          <span class="analytics-metric"><span id="estimatedDuration" class="analytics-val">0</span> <span class="analytics-unit">hours</span></span>
+        </div>
+        <div class="analytics-row">
+          <span class="analytics-label">Lectures Hours Completed:</span>
+          <span class="analytics-metric"><span id="completedHours" class="analytics-val">0</span> <span class="analytics-unit">hours</span></span>
+        </div>
+        <div class="analytics-row">
+          <span class="analytics-label">Percentage Completed:</span>
+          <span class="analytics-metric"><span id="percentCompleted" class="analytics-val">0%</span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="add-playlist">
+      <h2>Add Your Course Playlist</h2>
+      <div class="add-playlist-controls">
+        <input type="text" id="playlistInput" placeholder="Paste YouTube playlist link here" />
+        <button id="loadBtn">Load Playlist</button>
+      </div>
+    </section>
+
+    <section class="playlist">
+      <h2>Your YouTube Playlist</h2>
+      <ul id="videoList"></ul>
+    </section>
+
+    <section class="ml-features-section">
+      <div class="ml-features-header">
+        <h2>🤖 AI-Powered Learning Features</h2>
+        <p>Unlock personalized insights with machine learning</p>
+      </div>
+
+      <div class="ml-features-buttons">
+        <button id="mlRecommendationBtn" class="ml-feature-btn recommendation-btn">
+          <span class="ml-btn-icon">💡</span>
+          <span class="ml-btn-text">Get Smart Recommendations</span>
+          <span class="ml-btn-arrow">→</span>
+        </button>
+        <button id="mlPredictionBtn" class="ml-feature-btn prediction-btn">
+          <span class="ml-btn-icon">📊</span>
+          <span class="ml-btn-text">Predict My Performance</span>
+          <span class="ml-btn-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- Recommendation Modal -->
+      <div id="recommendationModal" class="ml-modal hidden">
+        <div class="ml-modal-content">
+          <div class="ml-modal-header">
+            <h3>💡 Smart Recommendations</h3>
+            <button class="ml-close-btn" data-close="recommendationModal">&times;</button>
+          </div>
+          <div id="recommendationContent" class="ml-modal-body"></div>
+        </div>
+      </div>
+
+      <!-- Prediction Modal -->
+      <div id="predictionModal" class="ml-modal hidden">
+        <div class="ml-modal-content">
+          <div class="ml-modal-header">
+            <h3>📊 Performance Prediction</h3>
+            <button class="ml-close-btn" data-close="predictionModal">&times;</button>
+          </div>
+          <div id="predictionContent" class="ml-modal-body">
+
+            <form id="predictionForm" class="prediction-form">
+              <div class="form-group">
+                <label for="predInput">Progress %</label>
+                <input type="number" id="predInput" min="0" max="100" value="70" required />
+              </div>
+              <div class="form-group">
+                <label for="hoursInput">Prep Hours</label>
+                <input type="number" id="hoursInput" min="0" step="0.01" value="1.00" required />
+              </div>
+              <button type="submit" class="ml-predict-submit">Predict Now</button>
+            </form>
+
+            <div id="ucSummaryBox" class="uc-summary-box">
+              <div class="uc-title">Understanding Matrix</div>
+              <div class="uc-line" id="ucSummaryText">
+                No feedback yet.
+              </div>
+            </div>
+
+            <div id="predictionResult" class="prediction-result hidden"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="mlModalOverlay" class="ml-modal-overlay hidden"></div>
+    </section>
+  </div>
+
+  <script src="../assets/js/dashboard/dashboard.js"></script>
+</body>
+</html>
