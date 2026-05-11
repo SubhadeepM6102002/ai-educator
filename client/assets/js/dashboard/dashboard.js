@@ -19,7 +19,7 @@ function initializeDarkMode() {
 initializeDarkMode();
 
 // backend URL on Render
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://ai-educator.onrender.com";
 async function saveProgressToDatabase() {
   try {
     const completedVideos = [];
