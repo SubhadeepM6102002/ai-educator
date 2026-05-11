@@ -10,7 +10,7 @@ async function login(event) {
   }
 
   try {
-    const response = await fetch("https://ai-educator.onrender.com", {
+    const response = await fetch("https://ai-educator.onrender.com/login", {
       method: "POST",
 
       headers: {
