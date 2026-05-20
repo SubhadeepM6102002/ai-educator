@@ -183,47 +183,40 @@ document.addEventListener("DOMContentLoaded", () => {
       playlistInput.value = data.playlist;
 
       loadBtn.click();
+      await new Promise((resolve) => setTimeout(resolve, 4000));
 
-      const waitForVideos = setInterval(() => {
-        const checkboxes = document.querySelectorAll("input[type='checkbox']");
+      // Restore completed videos
+      if (data.completedVideos) {
+        data.completedVideos.forEach((id) => {
+          const checkbox = document.getElementById(id);
 
-        if (checkboxes.length > 0) {
-          clearInterval(waitForVideos);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+      }
 
-          // Restore completed videos
-          if (data.completedVideos) {
-            data.completedVideos.forEach((id) => {
-              const checkbox = document.getElementById(id);
+      // Restore feedback state
+      if (data.feedbackState) {
+        feedbackState = data.feedbackState;
 
-              if (checkbox) {
-                checkbox.checked = true;
-              }
-            });
+        Object.keys(feedbackState).forEach((index) => {
+          const lectureItem = document.querySelectorAll(".lecture-item")[index];
+
+          if (!lectureItem) return;
+
+          if (feedbackState[index] === "understood") {
+            lectureItem.style.backgroundColor = "#e6ffe6";
           }
 
-          // Restore feedback state
-          if (data.feedbackState) {
-            feedbackState = data.feedbackState;
-
-            Object.keys(feedbackState).forEach((index) => {
-              const lectureItem =
-                document.querySelectorAll(".lecture-item")[index];
-
-              if (!lectureItem) return;
-
-              if (feedbackState[index] === "understood") {
-                lectureItem.style.backgroundColor = "#e6ffe6";
-              }
-
-              if (feedbackState[index] === "confused") {
-                lectureItem.style.backgroundColor = "#fff5e6";
-              }
-            });
+          if (feedbackState[index] === "confused") {
+            lectureItem.style.backgroundColor = "#fff5e6";
           }
+        });
+      }
 
-          updateProgress();
-        }
-      }, 500);
+      updateProgress();
+
     }
     } catch (error) {
       console.error("Load progress error", error);
