@@ -180,10 +180,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (data.playlist) {
       playlistInput.value = data.playlist;
 
-      setTimeout(() => {
-        loadBtn.click();
+      playlistInput.value = data.playlist;
 
-        setTimeout(() => {
+      loadBtn.click();
+
+      const waitForVideos = setInterval(() => {
+        const checkboxes = document.querySelectorAll("input[type='checkbox']");
+
+        if (checkboxes.length > 0) {
+          clearInterval(waitForVideos);
+
           // Restore completed videos
           if (data.completedVideos) {
             data.completedVideos.forEach((id) => {
@@ -215,14 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
           }
 
-          // Restore streak
-          if (data.streak) {
-            localStorage.setItem(`currentStreak_${userHash}`, data.streak);
-          }
-
-          // Refresh UI
           updateProgress();
-        }, 2000);
+        }
       }, 500);
     }
     } catch (error) {
@@ -402,6 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       localStorage.removeItem(`lastCompletionDate_${userHash}`);
     }
+    saveProgressToDatabase();
   }
 
   function loadProgressFromStorage() {

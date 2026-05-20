@@ -2,10 +2,12 @@ async function login(event) {
   event.preventDefault();
 
   const username = document.getElementById("name").value.trim();
+
   const password = document.getElementById("password").value;
 
   if (!username || !password) {
     alert("Please enter username and password.");
+
     return;
   }
 
@@ -35,15 +37,16 @@ async function login(event) {
       alert(data.message);
     }
   } catch (error) {
-    alert("Server error");
     console.error(error);
+
+    alert("Server error");
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.querySelector("form");
+  const form = document.getElementById("loginForm");
 
-  if (loginForm) {
-    loginForm.addEventListener("submit", login);
+  if (form) {
+    form.addEventListener("submit", login);
   }
 });
